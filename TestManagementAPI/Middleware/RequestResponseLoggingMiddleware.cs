@@ -13,23 +13,19 @@ public class RequestResponseLoggingMiddleware
 
     public async Task InvokeAsync(HttpContext context, ILogger<RequestResponseLoggingMiddleware> logger)
     {
-        var request = context.Request;
-        var requestLog = new
+        try
         {
-            Timestamp = DateTime.UtcNow,
-            Method = request.Method,
-            Path = request.Path.Value,
-            QueryString = request.QueryString.Value,
-            RemoteIP = context.Connection.RemoteIpAddress?.ToString()
-        };
+            var request = context.Request;
+            var requestLog = new
+            {
+                Timestamp = DateTime.UtcNow,
+                Method = request.Method,
+                Path = request.Path.Value,
+                QueryString = request.QueryString.Value,
+                RemoteIP = context.Connection.RemoteIpAddress?.ToString()
+            };
 
-        logger.LogInformation("Request: {@Request}", requestLog);
-
-        // Capture response
-        var originalBodyStream = context.Response.Body;
-        using (var responseBody = new MemoryStream())
-        {
-            context.Response.Body = responseBody;
+            logger.LogInformation("Request: {@Request}", requestLog);
 
             await _next(context);
 
@@ -42,8 +38,11 @@ public class RequestResponseLoggingMiddleware
             };
 
             logger.LogInformation("Response: {@Response}", responseLog);
-
-            await responseBody.CopyToAsync(originalBodyStream);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Unhandled exception in RequestResponseLoggingMiddleware");
+            throw;
         }
     }
 }

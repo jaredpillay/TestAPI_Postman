@@ -18,6 +18,7 @@ C:\Users\Admin\source\repos\TestAPI_Postman\TestManagementAPI\obj\Debug\net10.0\
 C:\Users\Admin\source\repos\TestAPI_Postman\TestManagementAPI\obj\Debug\net10.0\TestManagementAPI.csproj.CoreCompileInputs.cache
 C:\Users\Admin\source\repos\TestAPI_Postman\TestManagementAPI\obj\Debug\net10.0\TestManagementAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Admin\source\repos\TestAPI_Postman\TestManagementAPI\obj\Debug\net10.0\TestManagementAPI.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Admin\source\repos\TestAPI_Postman\TestManagementAPI\obj\Debug\net10.0\TestManagementAPI.sourcelink.json
 C:\Users\Admin\source\repos\TestAPI_Postman\TestManagementAPI\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Users\Admin\source\repos\TestAPI_Postman\TestManagementAPI\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\Admin\source\repos\TestAPI_Postman\TestManagementAPI\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json

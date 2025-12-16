@@ -13,8 +13,41 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
+
+// Enable RequestResponseLoggingMiddleware
 app.UseMiddleware<RequestResponseLoggingMiddleware>();
-app.UseMiddleware<ApiKeyAuthenticationMiddleware>();
+
+// Log application startup
+Console.WriteLine("Application started. Listening for requests...");
+//app.UseMiddleware<RequestResponseLoggingMiddleware>();
+
+// Add global exception handling middleware
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        context.Response.ContentType = "application/json";
+
+        var exceptionFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>();
+        if (exceptionFeature != null)
+        {
+            var error = new
+            {
+                type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                title = "Internal Server Error",
+                status = 500,
+                detail = exceptionFeature.Error.Message,
+                stackTrace = exceptionFeature.Error.StackTrace
+            };
+
+            Console.WriteLine("Unhandled Exception: " + error.detail);
+            Console.WriteLine("Stack Trace: " + error.stackTrace);
+
+            await context.Response.WriteAsJsonAsync(error);
+        }
+    });
+});
 
 // GET all test cases with filtering and pagination
 app.MapGet("/api/testcases", async (HttpContext context, ITestCaseRepository repo) =>
