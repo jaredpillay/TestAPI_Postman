@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace TestManagementAPI.Models;
 
 public class TestCase
@@ -12,10 +14,17 @@ public class TestCase
 
 public class CreateTestCaseRequest
 {
+    [Required(ErrorMessage = "Title is required.")]
+    [StringLength(120, MinimumLength = 3, ErrorMessage = "Title must be between 3 and 120 characters.")]
     public string Title { get; set; } = string.Empty;
+
     public string? Description { get; set; }
+
+    [Required(ErrorMessage = "Priority is required.")]
     public TestCasePriority Priority { get; set; }
+
     public bool IsActive { get; set; } = true;
+
     public List<string> Tags { get; set; } = new();
 }
 
